@@ -1,0 +1,45 @@
+<div *ngIf="this.contact">
+<!--
+  <div>
+    nombre:
+    <input [(ngModel)]="this.contact.nombre" placeholder="nombre" />
+  </div>
+  <div>
+    apellido:
+    <input [(ngModel)]="this.contact.apellido" placeholder="apellido" />
+  </div>
+  <div>
+    email:
+    <input [(ngModel)]="this.contact.email" placeholder="nombre" />
+  </div>
+  <button (click)="setContact(this.contact)">Guardar</button> -->
+  <!-- <button (click)="setContact(this.contact)" *ngIf="this.contact.id">Eliminar</button> -->
+
+  <form [formGroup]="formContact" (ngSubmit)="setContact()">
+    <div class="form-group input-group-lg">
+      Nombre
+        <input class="form-control" placeholder="Nombre" formControlName="name">
+    </div>
+    <div>
+      apellido:
+      <input formControlName="last_name" placeholder="Apellido" />
+    </div>
+    <div>
+      email:
+      <input formControlName="email" placeholder="Email" />
+    </div>
+    <div class="form-group">
+        <button class="btn btn-danger btn-block btn-lg">guardar</button>
+    </div>
+</form>
+
+</div>
+
+<!-- <div>
+  nombre:
+  <input [(ngModel)]="this.contact.nombre" placeholder="nombre" />
+</div>
+<div>
+  nombre:
+  <input [(ngModel)]="this.contact.nombre" placeholder="nombre" />
+</div> -->
