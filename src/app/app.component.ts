@@ -1,50 +1,50 @@
-import { Component } from '@angular/core';
-import { Contact } from './models/contatc';
+import { Component, OnInit } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { Contact } from './models/contact.interface';
 import { ContactService } from './services/contact.service';
+import { AddContact, GetContact } from './state/contact.actions';
+import { ContactState } from './state/contact.state';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'contactapp';
   contacts: Contact[] = [];
-  contactToAdd: Contact = new Contact;
+  test: Contact[] = [];
+  contactToAdd: Contact | undefined ;
 
-  constructor(private contactService:ContactService){}
+  @Select(ContactState.getContactList) contacts$: Observable<Contact[]> | undefined;
+
+  constructor(private contactService:ContactService, private store: Store){}
 
   ngOnInit() : void {
-      this.getContacts();
+    this.store.dispatch(new GetContact());
+      // this.getContacts();
   }
 
-  getContacts() {
-    this.contactService.getContacts().subscribe(({data , message} : any) =>
-    {
-      this.contacts = data;
-    });
-  }
+  // getContacts() {
+  //   this.contactService.getContacts().subscribe(({data , message} : any) =>
+  //   {
+  //     this.contacts = data;
+  //   });
+  // }
 
   addModalContact() {
 
   }
 
-  // setContact(c:Contact) {
-  //   const res = this.contactService.setContact(c);
-
+  // deleteContact(c:Contact) {
+  //   this.contactService.delete(c).subscribe(({data , message} : any) =>
+  //   {
+  //     this.contacts = data;
+  //   });
   // }
 
-  deleteContact(c:Contact) {
-    // const res = this.contactService.delete(c);
-    // debugger
-    this.contactService.delete(c).subscribe(({data , message} : any) =>
-    {
-      this.contacts = data;
-    });
-    // this.getContacts();
-  }
-
-  createContactList(contacts:Contact[]) {
-    this.contacts = contacts;
+  createContactList(contact:Contact) {debugger
+    this.store.dispatch(new AddContact(contact));
   }
 }

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8090/apicontact/v1/capa_servicio/'
+  apiUrl: 'http://localhost/apicontact/v1/capa_servicio/'
 };
 
 /*

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Contact } from 'src/app/models/contatc';
-import { ContactService } from 'src/app/services/contact.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Contact } from 'src/app/models/contact.interface';
 
 @Component({
   selector: 'app-manage-contact',
@@ -11,14 +11,15 @@ import { ContactService } from 'src/app/services/contact.service';
 export class ManageContactComponent implements OnInit {
   @Input() contact?: Contact;
   @Output() contactsUpdated = new EventEmitter<Contact[]>();
-  formContact: FormGroup;
+  // formContact: FormGroup;
 
-  constructor(private contactService: ContactService, public fb: FormBuilder) {
-    this.formContact = this.fb.group({
-      name: [''],
-      last_name: [],
-      email: ['']
-    })
+  constructor(private route: ActivatedRoute) {
+   // First get the product id from the current route.
+  const routeParams = this.route.snapshot.paramMap;
+  const productIdFromRoute = Number(routeParams.get('productId'));
+
+  // Find the product that correspond with the id provided in route.
+  // this.product = products.find(product => product.id === productIdFromRoute);
    }
 
   ngOnInit(): void {}
@@ -37,23 +38,23 @@ export class ManageContactComponent implements OnInit {
     // });
   }
 
-  setContact(){
-    // var formData: any = new FormData();
-    // formData.append('name', this.formContact.get('name')?.value);
-    // formData.append('last_name', this.formContact.get('apellido')?.value);
-    // formData.append('email', this.formContact.get('email')?.value);
-    let n = this.formContact.get('name')?.value;
-    let l = this.formContact.get('last_name')?.value;
-    let e = this.formContact.get('email')?.value;
-    const o = new Contact();
-// debugger
-    o.nombre = n;
-    o.apellido = l;
-    o.email = e;
+//   setContact(){
+//     // var formData: any = new FormData();
+//     // formData.append('name', this.formContact.get('name')?.value);
+//     // formData.append('last_name', this.formContact.get('apellido')?.value);
+//     // formData.append('email', this.formContact.get('email')?.value);
+//     let n = this.formContact.get('name')?.value;
+//     let l = this.formContact.get('last_name')?.value;
+//     let e = this.formContact.get('email')?.value;
+//     const o = new Contact();
+// // debugger
+//     o.nombre = n;
+//     o.apellido = l;
+//     o.email = e;
 
-    this.contactService.setContact(o).subscribe((contacts:Contact[])=> {
-      this.contactsUpdated.emit(contacts);
-    });;
-  }
+//     this.contactService.setContact(o).subscribe((contacts:Contact[])=> {
+//       this.contactsUpdated.emit(contacts);
+//     });;
+//   }
 
 }
