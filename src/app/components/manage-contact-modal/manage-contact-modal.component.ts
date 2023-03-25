@@ -1,9 +1,11 @@
 import { Component, ElementRef, Inject, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { Contact } from 'src/app/models/contact.interface';
+import { Contact } from 'src/app/models/contact';
 import { ContactService } from 'src/app/services/contact.service';
 import { EventEmitter } from '@angular/core';
+import { AddContact } from 'src/app/state/contact.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-manage-contact-modal',
@@ -18,10 +20,10 @@ export class ManageContactModalComponent implements OnInit {
   formContact: FormGroup;
   selectedAlign: AlignType;
   isEditting: boolean = false;
-  c: Contact;
+  c: Contact = new Contact();
 
   constructor(public dialogRef: MatDialogRef<ManageContactModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private contactService: ContactService, public fb: FormBuilder, private modal: MatDialog) {debugger
+    @Inject(MAT_DIALOG_DATA) public data: any, private contactService: ContactService, public fb: FormBuilder, private modal: MatDialog, private store: Store) {
       this.isEditting = data['isEditting'];
       this.id = data.contact.id;
       // this.emitter = new EventEmitter(true);      
@@ -58,21 +60,33 @@ export class ManageContactModalComponent implements OnInit {
       this.c.apellido = this.formContact.value.last_name;
       this.c.email = this.formContact.value.email;
 
-      this.contactService.setContact(this.c).subscribe((data:any)=> {
-        // const { message:string, contact_id:number, contacts: Array<object> } = data;
-        // const contacts = data.contacts as Contact[];
-        // EventEmitter
-        this.contactsUpdated.emit(data.contacts);
+      const c = {
+        id: this.id,
+        nombre: this.formContact.value.name,
+        apellido: this.formContact.value.last_name,
+        email: this.formContact.value.email
+      }
 
-        if (this.dialogPopup != undefined) {
-          this.modal.open(this.dialogPopup, {
-           data: {message:data.message},
-           exitAnimationDuration: '1.5s',
-           role: 'alertdialog'
-         });
-         setTimeout(()=>this.modal.closeAll(), 2000);
-        }
-      });
+      const contact = Object.create(c) as Contact;
+      console.log(contact)
+
+      this.store.dispatch(new AddContact(this.c));
+      this.modal.closeAll();
+      // this.contactService.setContact(this.c).subscribe((data:any)=> {
+      //   // const { message:string, contact_id:number, contacts: Array<object> } = data;
+      //   // const contacts = data.contacts as Contact[];
+      //   // EventEmitter
+      //   this.contactsUpdated.emit(data.contacts);
+
+      //   if (this.dialogPopup != undefined) {
+      //     this.modal.open(this.dialogPopup, {
+      //      data: {message:data.message},
+      //      exitAnimationDuration: '1.5s',
+      //      role: 'alertdialog'
+      //    });
+      //    setTimeout(()=>this.modal.closeAll(), 2000);
+      //   }
+      // });
     }
   }
 

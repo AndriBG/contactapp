@@ -3,23 +3,21 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs';
 
-import { Contact } from '../models/contact.interface';
+import { Contact } from '../models/contact';
 import { ContactService } from '../services/contact.service';
 import { AddContact, /**ContactAction ,**/ GetContact, UpdateContact } from './contact.actions';
 
 export class ContactStateModel {
   // public items: string[] = [];
+  public name: string;
   public contacts: Contact[];
   public selectedContact: Contact;
 }
 
-const defaults = {
-  items: []
-};
-
 @State<ContactStateModel>({
   name: 'contact',
   defaults: {
+    name: ContactState.STATE_NAME,
     contacts: [],
     selectedContact: null,
   }
@@ -31,6 +29,7 @@ export class ContactState {
   //   const state = getState();
   //   setState({ items: [ ...state.items, payload ] });
   // }
+  static STATE_NAME = 'ContactState';
 
   constructor(private readonly contactSvc : ContactService) {
 
@@ -50,10 +49,10 @@ export class ContactState {
   addContact({ getState, patchState }: StateContext<ContactStateModel>, { payload }: AddContact) : Observable<any>{
     // const state = getState();
     return this.contactSvc.setContact(payload).pipe(
-      tap((contact:Contact) => {
-        const state = getState();
+      tap((contact:any) => {
+        const state: any = getState();
         patchState({
-          contacts: [...state.contacts, contact],
+          contacts: [...state.contacts.data, contact.contact],
         });
       })
     );
@@ -71,8 +70,16 @@ export class ContactState {
   }
 
   @Action(UpdateContact)
-  updateContact({getState, setState}: StateContext<ContactStateModel>, { payload }: UpdateContact) : void {
+  updateContact({getState, patchState}: StateContext<ContactStateModel>, { payload }: UpdateContact) : void {
     const state = getState();
+    
+    // patchState({selectedContact: payload});
   }
 
+
+// @Action(LoadMainState)
+// async loadMainState(ctx: StateContext<ContactStateModel>) {
+//   const _activeState = await this.getActiveState(store);
+//   ctx.patchState({ mainState: _activeState });
+// }
 }

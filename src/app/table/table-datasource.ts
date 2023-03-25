@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import { Contact } from '../models/contact.interface';
+import { Contact } from '../models/contact';
 
 // TODO: Replace this with your own data model type
 export interface TableItem {
@@ -59,7 +59,7 @@ export class TableDataSource extends DataSource<Contact> {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
       return merge(observableOf(this.data), this.paginator.page, this.sort.sortChange)
-        .pipe(map(() => {debugger
+        .pipe(map(() => {
           return this.getPagedData(this.getSortedData([...this.data ]));
         }));
     } else {
@@ -96,7 +96,7 @@ export class TableDataSource extends DataSource<Contact> {
     }
 
     return data.sort((a, b) => {
-      const isAsc = this.sort?.direction === 'desc';debugger
+      const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
         // case 'nombre': return compare(a.nombre, b.nombre, isAsc);
         case 'id': return compare(+a?.id, +b?.id, isAsc);

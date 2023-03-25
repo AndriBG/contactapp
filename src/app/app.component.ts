@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Contact } from './models/contact.interface';
+import { Contact } from './models/contact';
 import { ContactService } from './services/contact.service';
 import { AddContact, GetContact } from './state/contact.actions';
 import { ContactState } from './state/contact.state';
@@ -23,28 +23,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit() : void {
     this.store.dispatch(new GetContact());
-      // this.getContacts();
   }
 
-  // getContacts() {
-  //   this.contactService.getContacts().subscribe(({data , message} : any) =>
-  //   {
-  //     this.contacts = data;
-  //   });
-  // }
-
-  addModalContact() {
-
-  }
-
-  // deleteContact(c:Contact) {
-  //   this.contactService.delete(c).subscribe(({data , message} : any) =>
-  //   {
-  //     this.contacts = data;
-  //   });
-  // }
-
-  createContactList(contact:Contact) {debugger
+  createContactList(contact:Contact) {
     this.store.dispatch(new AddContact(contact));
   }
 }

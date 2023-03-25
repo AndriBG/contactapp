@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Contact } from 'src/app/models/contact.interface';
+import { Contact } from 'src/app/models/contact';
 
 @Component({
   selector: 'app-manage-contact',

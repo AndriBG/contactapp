@@ -1,4 +1,4 @@
-import { Contact } from '../models/contact.interface';
+import { Contact } from '../models/contact';
 
 // cada una de estas acciones se despacha cuando ocurre un evento (click,enter,etc) en la app.
 

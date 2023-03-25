@@ -1,28 +1,25 @@
+
 <div class="grid-container">
   <h1 class="mat-h1">Lista de Contactos en su nube</h1>
   <button mat-raised-button color="primary" (click)="openDialog()">
     <mat-icon fontIcon="add"></mat-icon>
   </button>
-  <app-table (contactsUpdated)="updateContactList($event)" (contacts)="childContacts($event)" ></app-table>
+  <app-table (contacts)="childContacts($event)" ></app-table>
   <!-- <mat-grid-list cols="2" rowHeight="350px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{card.title}}
-            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Expand</button>
-              <button mat-menu-item>Remove</button>
-            </mat-menu>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <app-table *ngIf="card.title=='Card 1'" ></app-table>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
+    <ul>
+      <li *ngFor="let post of contacts | async">
+        <div class="card">
+          <div class="card-content">
+            <p class="id"><small>ID: {{ post.id }}</small></p>
+            <p>{{ post.nombre }}</p>
+            <a class="button is-danger is-small" >Eliminar</a>
+          </div>
+        </div>
+      </li>
+    </ul>
   </mat-grid-list> -->
+  <!-- <div class="notification is-danger" *ngIf="(this.contacts | async).length == 0">
+    Sin Posts :(
+  </div> -->
 </div>
+

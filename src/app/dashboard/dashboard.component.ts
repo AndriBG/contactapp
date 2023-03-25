@@ -4,7 +4,9 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ManageContactModalComponent } from '../components/manage-contact-modal/manage-contact-modal.component';
 import { Event } from '@angular/router';
-import { Contact } from '../models/contact.interface';
+import { Contact } from '../models/contact';
+import { Observable } from 'rxjs';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,8 +17,8 @@ export class DashboardComponent {
 
   animal: string='';
   name: string='';
-  contacts: Contact[] = [];
-  c: Contact = Object.create({id:0,nombre:'',apellido:'',email:''});
+  contacts: Observable<Contact[]>;
+  c: Contact = new Contact();
 
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -39,10 +41,12 @@ export class DashboardComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) {}
+  constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog, private store: Store) {
+    this.contacts = this.store.select(state => state.contact.contacts.data);
+  }
 
   openDialog(): void {  
-debugger
+
     const dialogRef = this.dialog.open(ManageContactModalComponent, {
       width: '250px',
       data: {contact: this.c, isEditting:false},
@@ -57,9 +61,9 @@ debugger
     });
   }
 
-  updateContactList(contacts: Contact[]) {debugger
-    this.contacts = contacts;
-  }
+  // updateContactList(contacts: Contact[]) {debugger
+  //   this.contacts = contacts;
+  // }
 
   childContacts(event: any) {
 debugger

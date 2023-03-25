@@ -1,7 +1,7 @@
-export interface Contact {
+export class Contact {
   [x: string]: any;
   // items: any[] = [];
-  id:number;
+  id?:number;
   nombre: string;
   apellido: string;
   email: string;
